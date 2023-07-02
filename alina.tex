@@ -1,0 +1,159 @@
+\documentclass{article}
+\usepackage{cmap} %копирование и поиск по файлам PDF
+\usepackage[T2A]{fontenc} %подключение cyrillic шрифтов
+\usepackage[russian]{babel} %корректное использование cyrillic символов
+\usepackage[utf8]{inputenc} %кодировка
+\usepackage{amssymb} %amsfonts +  дополнительные математические символов
+\usepackage[dvipsnames]{xcolor} %дополнительные цвета
+\pagestyle{plain} %заголовок пустой, колонтикул содержит номера страниц
+\usepackage[unicode, colorlinks]{hyperref}  %оформление гиперссылок
+
+%--------------------------------------
+%Ненужные пакеты и команды:
+
+%\usepackage{xcolor} -- не нужно, так как базовые цвета входят в пакет [dvipsnames]
+%\newtheorem{Example}{Пример}[section] -- уже есть такая же команда, только с названием Ex
+%\setcounter{MaxMatrixCols}{48} -- задание максимального числа столбцов в массиве
+
+%\AtBeginDocument{
+%  \hypersetup{
+%    citecolor=Crimson,
+ %  linkcolor = Crimson}}	-- зачем?
+ 
+ %\usepackage{upgreek}  -- греческие буквы с надлежащим масштабированием в индексах  
+  %\usepackage{amsthm} -- оформление теорем
+  
+ %\usepackage[shortlabels]{enumitem} -- краткий метод определения схемы нумерации 
+ %\usepackage[tbtags]{amsmath} -- много дополнительных математических символов и команд
+ %\usepackage{mathrsfs} -- использование Ralph Smith's Formal Script Font 
+ %\usepackage[matrix,arrow,curve]{xy} -- очень интересные диаграммы со стрелочками
+%\usepackage{graphicx} -- операции с графиками
+%\usepackage{tikz} -- создание графических элементов
+%\usetikzlibrary{calc, intersections} -- расчет точек пересечения элементов
+%\usetikzlibrary {positioning} -- задание положения элементов друг относительно друга
+%\usetikzlibrary{decorations.markings} -- линии/графики + преобразования
+
+% Рисование и отображение
+%\usepackage{pgfplots,caption} -- рисование корректных графиков и картинок
+%\pgfplotsset{compat=1.9} -- загружаемая версия
+%\usepackage{placeins}  -- корректное отображение чисел с запятой
+%\usepackage{resizegather}  -- попытка уместить большие уравнения в строку 
+
+%красивые буквы
+%\newcommand{\E}{\mathbb{E}}
+%\newcommand{\LL}{\mathcal{L}}
+%\newcommand{\QQ}{\mathcal{Q}}
+%\newcommand{\LIND}{\mathcal{L}_{\textup{ind}}}
+
+%зачем, если есть команда Anyletter
+%\newcommand{\p}[2]{p^{#1}_{#2}}
+%\newcommand{\h}[2]{h^{#1}_{#2}}
+%\newcommand{\q}[2]{q^{#1}_{#2}}
+%\newcommand{\g}[2]{g^{#1}_{#2}}
+
+%скобочки
+%\newcommand{\absbrackets}[1]{\left|#1 \right|}
+% ссылки в скобочках
+%\let\oldref\ref
+%\renewcommand{\ref}[1]{(\oldref{#1})}
+
+%определения
+%\newtheorem{Def}{Определение}[section]
+%\newtheorem{Ex}{Пример}[section]
+%\newtheorem{St}{Утверждение}[section]
+%\newtheorem{Pred}{Предложение}[section]
+%\newtheorem{Zam}{Замечание}[section]
+
+% пользовательские символы
+%\newcommand{\norm}[1]{\left\lVert#1\right\rVert}    %норма
+%\newcommand{\vect}[1]{\boldsymbol{#1}}					%вектор
+%\def\defeq{\mathrel{\stackrel{\rm def}=}}   				%равно по определению
+%--------------------------------------
+
+% Геометрия текста
+\textheight=24cm            	% высота текста
+\textwidth=16cm				% ширина текста
+\oddsidemargin=0pt          % отступ от левого края
+\topmargin=-1.5cm           % отступ от верхнего края
+\parindent=24pt					% абзацный отступ
+\parskip=4pt						% интервал между абзацами
+\def\baselinestretch{1.2}		%интервал между строками
+	
+%--------------------------------------
+
+% Определения
+\newtheorem{Lem}{Лемма}[section]
+\newtheorem{Th}{Теорема}[section]
+
+% Пользовательские символы
+\newcommand{\anyletter}[3]{#1^{#2}_{#3}}
+
+%красивые буквы
+\newcommand{\PP}{\mathsf{P}} 
+\newcommand{\LEMB}{\mathcal{L}_{\textup{emb}}}
+
+%дурость, но оставлю
+\newcommand{\question}[1]{\textcolor{PineGreen}{\textit{(!!! #1  !!!)}}}
+
+% красивые скобочки
+\let\originalleft\left
+\let\originalright\right
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+\renewcommand{\right}{\aftergroup\egroup\originalright}
+\newcommand{\brackets}[1]{\left(#1 \right)}
+\newcommand{\PCOND}[2]{\PP\brackets{#1 \: | \: #2}}
+
+
+\newenvironment{Proof}
+{\par\noindent{\bf Доказательство}}
+{\hfill$\scriptstyle\blacksquare$} 
+%--------------------------------------
+    
+\begin{document}
+\section{Вероятности достижения}
+\noindent В случае $M \question{смотрю} \leq 0$ верно, что $\PP\brackets{\tau_{x_0} < \infty} = 1$. Поэтому справедливо следующее равенство
+\begin{equation}\label{eq:h_xi_2_only}
+\anyletter{h}{x_0, i_0}{0,i} = \PP \brackets{\xi_{\tau_{x_0}}^{2} = i \: | \: \xi_0 = (x_0, i_0)}.
+\end{equation}
+
+\noindent Определим \textit{вложенную марковскую} цепь $\LEMB$ как конечную марковскую цепь на пространстве состояний $\{0,1, \dots, N\}$ по моментам времени $\tau_k$.  Пусть $\xi_{\tau_k}^{2}$ -- состояние цепи $\LEMB$ в момент времени $\tau_k$. Переходные вероятности запишем как:
+\[
+p(i \rightarrow j) = \anyletter{v}{i}{j}= \PP \brackets{\xi_{\tau_{k + 1}}^{2} = j \: | \: \xi_{\tau_k}^{2} = i}.
+\]
+
+\noindent Можно доказать, что вероятности достижения $\anyletter{h}{x_0, i_0}{0,i}$ могут быть выражены через переходные вероятности $\anyletter{v}{i}{j}$ следующим образом.
+\begin{Lem}\label{lem:h_and_v_connection}
+Пусть $M \leq 0$. Тогда
+\[
+\anyletter{h}{x_0, i_0}{0,i} = \sum_{i_1, i_2, \dots, i_{x_0 - 1}} \anyletter{v}{i_0}{i_1} \anyletter{v}{i_1}{i_2} \dots \anyletter{v}{i_{x_0-1}}{i} = \anyletter{v}{i_0}{i}(x_0),
+\]
+где $\anyletter{v}{i_0}{i}(k)$ -- переходная вероятность за $k$ шагов марковской цепи $\LEMB$.
+\end{Lem}
+\begin{Proof}
+Положим $\anyletter{\hat{v}}{i}{j}(0) = 0$ и
+\[
+\anyletter{\hat{v}}{i}{j}(k) = \PP\brackets{\tau_1 = k, \xi_{\tau_1}^{2} = j \: | \: \xi_{0}^{2} = i} = \sum \anyletter{p}{x, i}{x_1, i_1}  \anyletter{p}{x_1, i_1}{x_2, i_2} \dots \ \anyletter{p}{x_{k - 1}, i_{k - 1}}{x_k, i_k}, 
+\]
+где сумма берётся по всем путям длины $k$, что $x_s \geq x, \: s = 1, \dots, k - 2, \: x_{k-1} = x, \: x_k = x - 1,  i_k = j$.  В силу условия однородности определение вероятностей $\anyletter{\hat{v}}{i}{j}(k)$ корректно, поскольку правая часть последнего равенства не зависит от $x$.
+
+\noindent Тогда вероятности перехода $\anyletter{v}{i}{j}$ вложенной цепи $\LEMB$ можно выразить через вероятности $\anyletter{\hat{v}}{i}{j}(k)$ следующим образом:
+\[
+\anyletter{v}{i}{j} = \sum_{k = 1}^{\infty} \anyletter{\hat{v}}{i}{j}(k).
+\]
+
+\noindent Тогда вероятности $\anyletter{h}{x_0, i_0}{0,i}$ можно записать как
+\[
+\anyletter{h}{x_0, i_0}{0,i} = \sum_{n \geq x_0}\PP \brackets{\tau_{x_0} = n,  \xi_{\tau_{x_0}}^{2} = i \: | \:  \xi_{0} = (x_0, i_0)} = \sum_{\mathcal{A}} \sum_{n \geq x_0} \sum_{\mathcal{B}} \anyletter{\hat{v}}{i_0}{i_1}(k_1) \anyletter{\hat{v}}{i_1}{i_2}(k_2)\dots \anyletter{\hat{v}}{i_{x_0 -1}}{i}(k_{x_0}),
+\]
+где первая сумма берётся по множеству $\mathcal{A}$ всех наборов $(i_1, i_2, \dots, i_{x_0 - 1})$, а третья сумма -- по множеству $\mathcal{B}$ всех $k_l :  k_1 + \dots + k_{x_0} = n$
+Тогда 
+\[
+\sum_{n \geq x_0} \sum_{\mathcal{B}} \anyletter{\hat{v}}{i_0}{i_1}(k_1) \anyletter{\hat{v}}{i_1}{i_2}(k_2)\dots \anyletter{\hat{v}}{i_{x_0 -1}}{i}(k_{x_0}) = \sum_{k_1 = 1}^{\infty}\sum_{k_2 = 1}^{\infty} \dots \sum_{k_{x_0} = 1}^{\infty} \anyletter{\hat{v}}{i_0}{i_1}(k_1)\anyletter{\hat{v}}{i_1}{i_2}(k_2)\dots \anyletter{\hat{v}}{i_{x_0 -1}}{i}(k_{x_0}) = \anyletter{v}{i_0}{i_1} \anyletter{v}{i_1}{i_2}\dots \anyletter{v}{i_{x_0 - 1}}{i}.
+\]
+Следовательно,
+\[
+\anyletter{h}{x_0, i_0}{0,i} = \sum_{\mathcal{A}} \anyletter{v}{i_0}{i_1} \anyletter{v}{i_1}{i_2}\dots \anyletter{v}{i_{x_0 - 1}}{i} = \anyletter{v}{i_0}{i}(x_0).
+\]
+
+\end{Proof}
+\end{document}

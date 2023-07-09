@@ -1,0 +1,295 @@
+\documentclass{article}
+\usepackage{cmap} %копирование и поиск по файлам PDF
+\usepackage[T2A]{fontenc} %подключение cyrillic шрифтов
+\usepackage[russian]{babel} %корректное использование cyrillic символов
+\usepackage[utf8]{inputenc} %кодировка
+\usepackage{amssymb} %amsfonts +  дополнительные математические символов
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\pagestyle{plain} %заголовок пустой, колонтикул содержит номера страниц
+
+%красивые буквы
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\RR}{\mathcal{R}}
+\newcommand{\PP}{\mathsf{P}} 
+
+%определения
+\newtheorem{Def}{Определение}[section]
+\newtheorem{Ex}{Пример}[section]
+\newtheorem{Th}{Теорема}[section]
+\newtheorem{Pred}{Предложение}[section]
+\newtheorem{Zam}{Замечание}[section]
+
+% Геометрия текста
+\textheight=24cm            	% высота текста
+\textwidth=16cm				% ширина текста
+\oddsidemargin=0pt          % отступ от левого края
+\topmargin=-1.5cm           % отступ от верхнего края
+\parindent=24pt					% абзацный отступ
+\parskip=4pt						% интервал между абзацами
+\def\baselinestretch{1.2}		%интервал между строками
+
+% Пользовательские символы
+\newcommand{\anyletter}[3]{#1^{#2}_{#3}}
+
+% красивые скобочки
+\let\originalleft\left
+\let\originalright\right
+\renewcommand{\left}{\mathopen{}\mathclose\bgroup\originalleft}
+\renewcommand{\right}{\aftergroup\egroup\originalright}
+\newcommand{\brackets}[1]{\left(#1 \right)}
+\newcommand{\PCOND}[2]{\PP\brackets{#1 \: | \: #2}}
+
+\newenvironment{Proof}
+{\par\noindent{\bf Доказательство}}
+{\hfill$\scriptstyle\blacksquare$} 
+
+\begin{document}
+
+\section{Характеристические функции.}
+$\zeta$ - случайная величина, но со значениями в $\mathbb {C}$.
+$$\zeta = \xi + i\eta$$
+$$\E\zeta = \E\xi + i\E\eta$$
+$\mathbb {E}\zeta$ определено $\Longleftrightarrow$ $\mathbb {E}\xi + \mathbb {E}\eta$ определены.
+
+\Def Пусть есть 2 комплекснозначные случайные величины:
+$$\zeta_1 = \xi_1 + i\eta_1$$
+$$\zeta_2 = \xi_2 + i\eta_2$$
+Они независимы $\Longleftrightarrow$ независимы пары ($\xi_1, \xi_2$) и ($\eta_1, \eta_2$).
+
+\Def Пусть $ F = F(x)$ - $n$-мерная функция распределения в ($\mathbb {R}^n$,$\mathcal B(\mathbb {R}^n)$), $x = (x_1, x_2, ..., x_n)$. \newline
+Характеристической функцией 
+($n$-мерной функцией распределения) называется функция:
+$$\varphi(t) = \int_{\mathbb {R}^n} e^{i(t,x)}d{F(x)}, t \in \mathbb {R}^n$$
+
+\Def  Пусть $\xi = (\xi_1, \xi_2, ..., \xi_n)$ - случайный вектор на $(\Omega, \mathcal{F}, \mathbb{P})$ со значениями в $\mathbb {R}^n$. Характеристической функцией случайного вектора $\xi$ называется функция: 
+$$\varphi_{\xi}(t)  = \int_{\mathbb {R}^n} e^{i(t,x)}d{F_{\xi}(t)}, t \in \mathbb {R}^n$$
+$F_{\xi} = F_{\xi}(t)$ -- функция распределения вектора $\xi = (\xi_1, \xi_2, ..., \xi_n)$, $x = (x_1, x_2, ..., x_n)$.
+
+\noindent Пусть f(x) - плотность функции распределения F(x):
+$$\varphi(t)  = \int_{\mathbb {R}} e^{i(t,x)}f(x)d{x}$$
+$$\mathbb {E}g(\xi)  = \int_{\mathbb {R}^n} g(x)f_{\xi}(x)d{x}$$
+
+\Zam {Начальные наблюдения о характеристических функциях}
+\begin{enumerate}
+\item $\eta = a\xi + b$ \newline
+$\varphi_{\eta}(t) = \mathbb {E} e^{it\eta} = \mathbb {E} e^{it(a\xi + b)} =  \mathbb {E} e^{ita\xi} e^{itb} = e^{itb}\mathbb {E}e^{ita\xi}$
+$$\varphi_{\eta}(t) = e^{itb}\varphi_{\xi}(at)$$
+\item $\xi_1, \xi_2, ..., \xi_n$ - независимые случайные величины, 
+$S_n = \xi_1+ \xi_2+ ... + \xi_n$ \newline
+${\varphi_S}_n(t) = \mathbb{E}e^{it(\xi_1+ \xi_2+ ... + \xi_n)} = \mathbb{E}e^{it\xi_1}e^{it\xi_2}...e^{it\xi_n} =  \mathbb{E}e^{it\xi_1}\mathbb{E}e^{it\xi_2}...\mathbb{E}e^{it\xi_n} = \prod\limits_{j =1}^n{\varphi_{\xi}}_j(t)$
+$${\varphi_S}_n(t) = \prod\limits_{j =1}^n{\varphi_{\xi}}_j(t)$$
+\end{enumerate}
+\Ex
+\begin{enumerate}
+\item $\xi \sim Bern(p), 0<p<1$
+$$\varphi_{\xi}(t) = \mathbb{E}e^{it\xi} = e^{it*0}*\mathbb {P}{\xi = 0} + e^{it*1}*\mathbb {P}{\xi=1} = (1-p)+ e^{it}p = q + e^{it}p$$
+\item Пусть $\xi_1, \xi_2, ..., \xi_n$ - независимые случайные величины с одинаковым распределением Бернулли. Пусть $T_n = \frac{S_n - np}{ \sqrt{npq}}$
+$${\varphi_T}_n(t) = \varphi_{\frac{S_n - np}{\sqrt{npq}}}(t) = \mathbb {E}e^{it\frac{S_n - np}{ \sqrt{npq}}} =\mathbb {E}e^{it \frac{S_n}{\sqrt{npq}}}e^{-it\sqrt{\frac{np}{q}}} = e^{-it\sqrt{\frac{np}{q}}} (q+e^{\frac{it}{\sqrt{npq}}}p)^n = (qe^{-it\sqrt{\frac{p}{nq}}} + pe^{it\sqrt{\frac{q}{np}}})^n$$
+$${\varphi_T}_n(t)\underset{n \to \infty}{\longrightarrow} e^{-\frac{t^2}{2}}$$
+\end{enumerate}
+
+\textbf{Свойства характеристических функций}
+\Th
+Пусть $\xi = \xi(\omega)$ - случайная величина, $F = F(x)$ - функция распределения $\xi$.
+$\varphi_{\xi}(t) = \mathbb{E}e^{it\xi}$  - характеристическая функция. Тогда:
+\begin{enumerate}
+\item $|\varphi_{\xi}(t)| \leqslant \varphi_{\xi}(o) = 1$
+\item $\varphi_{\xi}(t)$ равномерно непрерывна по t
+\item $\varphi_{\xi}(t) = \overline{\varphi_{\xi}(-t)} $
+\item Если $\exists n: n \geqslant 1, E|\xi|^n < \infty$, то $\forall r \leqslant n \exists \varphi^{(r)}_{\xi}(t)$ и $\varphi^{(r)}_{\xi}(t) = \int_{\mathbb {R}} (ix)^re^{itx}d{F(x)}$
+$$ E\xi^r = \frac{\varphi^{(r)}(o)}{i^r}$$
+$\varphi^{(r)}_{\xi}(t) = \sum\limits_{к=0}^n \frac{(it)^r}{r!}E\xi^r + \frac{(it)^n}{n!}\epsilon_n(t)$, где $\epsilon_n(t) \underset{t \to 0}{\longrightarrow} 0$
+\item Если $\exists$ конечная $\varphi_{\xi}^{(2n)}(o)$, то $E\xi^{(2n)}< \infty$  
+\end{enumerate}
+
+\begin{Th}{(об определении функции распределения по характеристическим функциям).}
+Пусть F и G - функции распределения. При этом если функции F и G совпадают, т.е. $\forall  t \in \mathbb {R}  \int_{\mathbb {R}} e^{itx}d{F(x)} = \int_{\mathbb {R}} e^{itx}d{G(x)}$. Тогда $F(x) = G(x)$.
+\end{Th}
+
+\Th{(обращение).}
+Пусть $F = F_\xi$ - функция распределения, $\varphi_{\xi}(t) =\int_{\mathbb {R}} e^{itx}d{F(x)} $ - характеристическая функция. Тогда: $\forall {a,b}: a<b, F \in C(a,b)$
+$F(b) - F(a) = \lim\limits_{c\to\infty} \frac{1}{2\pi} \int\limits_{-c}^c \frac{e^{-ita}-e^{-itb}}{it} \varphi(t)dt$
+Если $\int_{\mathbb {R}} |\varphi(t)|dt <  \infty$ , то функция распределения F(x) имеет плотность  f(x).
+$$F(x) = \int_{-\infty}^x f(y)dy$$
+$$f(x) = \frac{1}{2\pi}\int_{\mathbb {R}}e^{-itx}\varphi(t)dt$$
+
+\section{Введение в математическую статистику.}
+\Ex Рассмотрим срок эксплуатации изделия, он случаен. Обозначим сроки эксплуатации изделия  $\xi_1, \xi_2, ...,  \xi_n$ -- независимые одинаково распределенные случайные величины.
+$\theta = \mathbb{E}\xi_i$
+\begin{itemize}
+\item Чему равно $\theta$, как его вычислить ? 
+\end{itemize}
+Берем n готовых изделий и проверяем их. \newline
+$x_1$  - срок эксплуатации 1 изделия \newline
+$x_2$  - срок эксплуатации 2 изделия \newline
+... \newline
+$x_n$  - срок эксплуатации n изделия \newline
+$$\frac{1}{n}\sum\limits_{i=1}^n \xi_i \xrightarrow[ \textup{п.н.}]{n \rightarrow \infty} \theta$$ 
+$$\overline{x} = \frac{1}{n}\sum\limits_{i=1}^n x_i$$
+Заметим, что при достаточно больших n величина $\overline{x} $ окажется близка к $\theta$ и позволит найти этот параметр, и даст ответ на вопрос о сроке эксплуатации. 
+При этом очевидно, что если: 
+\begin{itemize}
+ \item число n велико, то $\theta$ искать легче, $\theta$ точнее 
+ \item число n мало, то $\theta$ искать сложнее, $\theta$ менее точное 
+\end{itemize}
+
+\underline {\textbf{Задача}}: найти наилучшее значение параметра $\theta$, используя как можно меньшее число n.
+\Ex  Пусть в моменты времени $t_1, t_2, ..., t_n$ прибор проверяет небо на предмет НЛО. Пусть $x_1, x_2, ..., x_n$ - значения отраженного сигнала. При этом $x_i$ распределены так же как некоторая случайная величина $\xi$, которая есть помехи. Если в какой-то момент времени t в небе обнаруживается объект, то вместе с помехами поступает и полезный сигнал a. 
+Т.о. значения $x_i$ будут распределены как $\xi + a$.
+\begin{itemize}
+ \item Как, глядя на значения отраженного сигнала $x_1, x_2, ..., x_n$, понять, что в момент времени $t_i$ был обнаружен объект, а не только помехи?
+ \end{itemize}
+\underline {\textbf{Задача}}: Найти некоторое оптимальное решающее правило.
+Возможное усложнение: 
+$t_1, t_2, ..., t_k$
+Найти $\theta$, начиная с которого мы обнаруживаем объект.
+\Ex Провожу эксперимент: \newline
+$n_1$ раз в условиях A \newline
+$n_2$ раз в условиях B \newline
+Результаты: \newline
+$x_1, x_2, ..., x_n$ \newline
+$y_1, y_2, ..., y_m$ \newline
+Скажутся ли изменения в условиях эксперимента на его результате? \newline
+$\mathbb{P}_A$ - распределение $x_i, i = \overline{1,n_1}$ \newline
+$\mathbb{P}_B$ - распределение $y_j, j = \overline{1,n_2}$ \newline
+\underline {\textbf{Задача}}:
+$\mathbb{P}_A$ равно $\mathbb{P}_B$ ?  \newline
+
+\noindent \textbf{Вывод}:  По результатам наблюдений $x_1, ..., x_n$ за случайной величиной $\xi$ можно восстановить (при достаточно больших n) неизвестное распределение этой случайной величины. (и функционала от нее $\theta = \theta(P)$) \newline
+Пусть G -  эксперимент, связанный со случайной величиной  $\xi$, распределение которой -- P.
+$(\mathcal{X}, \mathcal{F}, \mathbb{P})$ - вероятностное пространство
+$\mathcal{X}$ - пространство значений случайной величины $\xi: \xi(x) = x$
+\Def Такое пространство $\mathcal{X}$ называется выборочным. \newline
+Если $\mathbb{P}$ сосредоточена лишь на части $\mathcal{F}$, то в качестве $\mathcal{X}$ можно понимать некоторое B, и $\mathcal{F}$ - сужение $\mathcal{F}$ на B. \newline
+Рассмотрим n независимых повторений эксперимента G.
+\Def  Вектор $\mathbb{X}_n = (x _1, x_2, ..., x_n)$ - выборка объёма n из совокупности с распределением P. \newline
+\textbf{Синонимы}:
+\begin{itemize}
+\item выборка из распределения $\mathbb{P}$
+\item простая выборка объема n из генеральной совокупности с распределением $\mathbb{P}$.
+\end{itemize}
+
+$\mathbb{X} = \mathbb{X}_n$ - случайная величина со значениями в $\mathbb{X} ^n = \underbrace{\mathbb{X}  \times ... \times \mathbb{X}}_{n} $ с распределением $\mathcal{B} = \mathcal{B} _1 \times \mathcal{B} _2 \times .... \times \mathcal{B} _n$, $\mathcal{B} _j \in F$ $\forall j = \overline{1,n}$ \newline
+Пусть дана некоторая выборка $X = (x_1, x_2, ..., x_n) \sim P$
+$x_i \in \mathbb{R} (=\mathcal{X})$
+$\mathbb{P}^{*}_n$ - дискретное распределение на $(\mathbb{R} , \mathcal{B}(\mathbb{R} ))$, сосредоточенное в точках $x_1, x_2, ..., x_n$, для которого вероятность значения $x_i$ полагается равной $\frac{1}{n}$. \newline
+$\forall \mathcal{B} \in \mathcal{B}(\mathbb{R})$ $\mathbb{P}^{*} _n(\mathcal{B}) = \frac{\#(\mathcal{B})}{n}$
+\Def $\mathbb{P}^{*}_n$ - эмпирическое распределение, построенное по выборке X.
+\begin{equation}
+I_x(\mathcal{B}) = 
+\begin{cases}
+   1 &\text{, $x \in B$}\\
+   0 &\text{, $x \notin B$}
+ \end{cases}
+\end{equation}
+Тогда  $\#(\mathcal{B} ) = \sum\limits_{i=1}^n {I_x}_i(B)$
+Так как  ${I_x}_i(\mathcal{B} )$ - случайная величина, следовательно, $\#(\mathcal{B})$ - случайная величина.
+Пусть $X_{ \infty} \sim \mathbb{P}, X_n = [X_{ \infty}]_n$, $n \rightarrow \infty$
+Получаем последовательность эмпирических распределений. Эта последовательность неорграниченно сближается с исходным распределением.
+\begin{Th} (без доказательства):
+Пусть $B \in B(\mathbb{R}), Xn = [X_\infty]_n \sim \mathbb{P}$
+Тогда $\mathbb{P}^{*}_n(B) \xrightarrow[\textup{п.н.}]{n \rightarrow \infty} \mathbb{P}$.
+\end{Th}
+
+\Th(Гливенко-Кантелли): Пусть J - совокупность множеств $\mathcal{B}$, являющихся полуитервалами вида $[a;b)$.
+$\sup\limits_{B \in J} |\mathbb{P}^{*}_n(B) - \mathbb{P}(B)| \xrightarrow[\textup{п.н.}]{n \rightarrow \infty} 0$ 
+\begin{Def} Функция распределения, соответствующая эмприческому распределению $P^{*}_n$, назывется эмпирической функцией распределения $F^{*}_n(x)$.
+$F^{*}_n(x) = P^{*}_n(-\infty, x]$ 
+\end{Def} 
+Построение функции распределения:
+\begin{enumerate}
+\item  Упорядочить выборку по возрастанию (=построить вариационный ряд):
+$(x_1, x_2, ..., x_n) \rightarrow x_{(1)} \leqslant x_{(2)} \leqslant ... \leqslant x_{(n)} $ 
+\item Пусть $F^{*}_n(k) := \frac{k}{n}, x \in ( x_{(k)}, x_{(k+1)})$
+$F^{*}_n(1) = \frac{1}{n}, x \in ( x_{(1)}, x_{(2)})$
+$F^{*}_n(k)$ - ступенчатая функция, имеющая скачки величиной  $\frac{1}{n}$  в точках  $x_i$ (если $x_i$ различны)
+\end{enumerate}
+
+\Th:
+Пусть F(x) - функция распределения $\mathbb{P}$. $\sup\limits_{x} |F^{*}_n(x) - F(x)| \xrightarrow[\textup{п.н.}]{n \rightarrow \infty} 0$
+\begin{Proof}
+Пусть F(x) - непрерывна. $\forall \epsilon > 0 N =: \frac{1}{\epsilon} \in \mathbb{Z}$.
+Ввиду непрерывности F(x) можно выбрать $z_0 = - \infty, z_1, ..., z_{N-1}, z_{N} = +\infty$, что \newline 
+$F(z_0) = 0$ \newline
+$F(z_1) = \epsilon =  \frac{1}{N}$ \newline
+... \newline
+$F(z_k) = k\epsilon =  \frac{k}{N}$ \newline
+... \newline
+$F(z_N) = 1$ \newline
+
+$F(z_{k+1}) = (k+1)\epsilon = k\epsilon +\epsilon $ \newline
+При $z \in [z_k, z_{k+1})$
+$F^{*}(z) - F(z) \leqslant F^{*}(z_{k+1}) - F^{*}(z_{k}) = F^{*}(z_{k+1}) - F^{*}(z_{k+1}) + \epsilon $
+$F^{*}(z) - F(z) \geqslant F^{*}(z_{k}) - F^{*}(z_{k+1}) = F^{*}(z_{k}) - F^{*}(z_{k}) - \epsilon $
+
+Пусть $A_k$ - множество элементарных событий $\omega = X_{\infty}$, на которых
+$F^{*}(z_k) \rightarrow F(z_k)$
+$P(A_k) = 1	$
+Тогда $\forall \omega \in A = \cup A_k \exists n(\omega): \forall{n} \geqslant n(\omega)$
+$|F^{*}(z_k) - F(z_k)| < \epsilon \forall k = \overline{0,n}$
+Но тогда 
+$\sup\limits_z |F^{*}(z) - F(z)| < 2\epsilon$
+Но в силу произвольности выбора $\epsilon>0, \forall \omega \in A, \forall n \geqslant n(\omega) P(A) = 1$  
+\end{Proof}
+
+\section {Сравнение оценок}
+$\theta>0$ -- неизвестное число.
+$x_i \in A, i = \overline{1,10}$ 
+
+\begin{equation*}
+A = \left(
+\begin{array}{cccc}
+1,2 & 2,5 & \ldots & 15,9\\
+3,2 & 12,8 & \ldots & 1,5\\
+\end{array}
+\right)
+\end{equation*}
+$x_i = \theta y_i$, числа $y_i$ можно считать случайными. \newline
+\underline{Вопрос}: как угадать значение $\theta$?
+Более формально:
+$R[0, \theta]$ - у нас есть равномерное распределение
+$x_i$ - реализация независимых и равномерно распределенных на $[0, \theta]$ случайных величин $X_i$
+
+\begin{equation*}
+F_{\theta}(x) = 
+ \begin{cases}
+   0 &\text{, $x \leqslant 0$}\\
+   \frac{x}{\theta}&\text{, $0<x<\theta$}\\
+   1 &\text{, $x \geqslant 0 $}
+ \end{cases}
+\end{equation*}
+
+$\theta \in \Theta = (0, +\infty)$
+
+\underline{Статистическая модель}:
+Семейство функций распределения 
+$\{F_{\theta}(x), \theta \in \Theta\}$, $\Theta$ - множество значений параметра
+Данные $x1, x2, ..., xn$ -- реализация выборки $X1, ..., Xn$, элементы которой имеют функцию распределения ${F_{\theta}}_0(x)$
+Задача: оценить ${\theta}_0$ как можно более точно.
+${\theta}_0$ будем оценивать при помощи некоторой функции $\hat{\theta}(x_1, ..., x_n)$
+В качестве оценок в нашем примере можно взять следующие:
+$\hat{\theta}_1 = x_n = max{x_1, ..., x_n}$
+$\hat{\theta}_2 = \frac{2(x_1+ ... +x_n)}{n}$
+Как сравнить оценки между собой?
+\Def Оценка $\hat{\theta}(x_1, ..., x_n)$ параметра $\theta$ называется несмещенной, если $E_{\theta}\hat{\theta}(x_1, ..., x_n) = \theta$ $\forall \theta \in \Theta$.
+\Zam:
+В чем же заключается важность "$\forall \theta \in \Theta$"?
+ $\hat{\theta}(x_1, ..., x_n) \equiv 1$ \\
+ $E\hat{\theta} = 1 $, т.o. если  $\theta = 1$, то $E_{\theta}\hat{\theta}(x_1, ..., x_n) = \theta$, и оценка является идеальной. \\
+$b(\theta) = E_{\theta}\hat{\theta} - \theta = 1 - \theta$ - смещение оценки (bias) \\
+$\theta$ -- параметр, но оценку хотим получить для некоторой функции $\varphi(\theta)$параметра $\theta$
+
+\Ex Есть партия готовых приборов 
+Отбираем n приборов 
+Пусть $X_1, ..., X_n$ - времена работы до поломки
+Будем считать, что $X_i \sim Exp(\theta)$
+$F_{\theta}(x) = (1-e^{-\theta x})I\{x>0\}$
+Хотим оценить среднее время до поломки прибора
+$\varphi (\theta) = EX_1$ = $\int_{0}^{\infty} x\theta e^{-\theta x}dx$ = $\theta\int_{0}^{\infty} x e^{-\theta x}dx$ = $\frac{1}{\theta}\int_0^{\infty} ye^{-y}dy$ = $\frac{1}{\theta}$
+
+$E \overline{X} = \frac{X_1 + ... + X_n}{n}$-- выборочное среднее
+$$ E\overline{X} = \frac{1}{n} \sum\limits_{i=1}^n EX_i = \frac{1}{n} \frac{n}{\theta} = \frac{1}{\theta} $$
+$E \overline{X} = \varphi(\theta) => \overline{X}$ является несмещенной оценкой функции $\varphi(\theta) $
+\end{document}
+
